@@ -8,51 +8,51 @@ var AdminRepo = require('../repositories/AdminRepository.js');
 var emailService = require('../services/emailService.js');
 
 
-exports.getLogin = function(req, res) {
-  if (req.agent)
-    return res.redirect('/admin');
+// exports.getLogin = function(req, res) {
+//   if (req.agent)
+//     return res.redirect('/admin');
 
-  res.render('admin/login', {
-    title: 'Login Admin'
-  });
-};
+//   res.render('admin/login', {
+//     title: 'Login Admin'
+//   });
+// };
 
-exports.postLogin = function(req, res, next) {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password cannot be blank').notEmpty();
+// exports.postLogin = function(req, res, next) {
+//   req.assert('email', 'Email is not valid').isEmail();
+//   req.assert('password', 'Password cannot be blank').notEmpty();
 
-  var errors = req.validationErrors();
+//   var errors = req.validationErrors();
 
-  if (errors) {
-    req.flash('errors', errors);
-    return res.redirect('/admin/login');
-  }
+//   if (errors) {
+//     req.flash('errors', errors);
+//     return res.redirect('/admin/login');
+//   }
 
-  passport.authenticate('local', function(err, admin, info) {
-    console.log("pasauth");
-    if (!admin || err) {
-      req.flash('errors', { msg: err || info.message });
-      return res.redirect('/login');
-    }
-    req.logIn(admin, function(loginErr) {
-      if (loginErr) return next(loginErr);
-      req.flash('success', { msg: 'Success! You are logged in.' });
-      var redirectTo = req.session.returnTo || '/';
-      console.log("redirectinf");
-      console.log(redirectTo);
-      delete req.session.returnTo;
-      res.redirect(redirectTo);
-    });
-  })(req, res, next);
-};
+//   passport.authenticate('local', function(err, admin, info) {
+//     console.log("pasauth");
+//     if (!admin || err) {
+//       req.flash('errors', { msg: err || info.message });
+//       return res.redirect('/login');
+//     }
+//     req.logIn(admin, function(loginErr) {
+//       if (loginErr) return next(loginErr);
+//       req.flash('success', { msg: 'Success! You are logged in.' });
+//       var redirectTo = req.session.returnTo || '/';
+//       console.log("redirectinf");
+//       console.log(redirectTo);
+//       delete req.session.returnTo;
+//       res.redirect(redirectTo);
+//     });
+//   })(req, res, next);
+// };
 
-exports.logout = function(req, res) {
-  req.logout();
-  res.locals.admin = null;
-  res.render('home', {
-    title: 'Home'
-  });
-};
+// exports.logout = function(req, res) {
+//   req.logout();
+//   res.locals.admin = null;
+//   res.render('home', {
+//     title: 'Home'
+//   });
+// };
 
 exports.getCreateAgent = function(req, res) {
   res.render('/admin/create', {title: "Creata Agent"});
