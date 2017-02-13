@@ -1,6 +1,6 @@
 'use strict';
 
-var passport = require('passport');
+var passport = require('../config/passport_agent').passport;
 
 exports.getLogin = function(req, res) {
   if (req.agent)

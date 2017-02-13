@@ -52,7 +52,6 @@ module.exports = function(db, DataTypes) {
       allowNull: false,
       isEmail: true
     },
-    role: DataTypes.STRING,
     profile: DataTypes.JSON,
     tokens: DataTypes.JSON
   }, {
@@ -61,7 +60,7 @@ module.exports = function(db, DataTypes) {
     classMethods: {
       associate: function(models) {
         Agent.hasMany(models.Order);
-        Agent.belongsTo(models.Admin);
+        Agent.belongsTo(models.Role);
       },
       encryptPassword: function(password, cb) {
         if (!password) {

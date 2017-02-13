@@ -2,14 +2,14 @@
 
 var crypto;
 var async = require('neo-async');
-var passport = require('passport');
+var passport = require('../config/passport_agent').passport;
 
 var AdminRepo = require('../repositories/AdminRepository.js');
 var emailService = require('../services/emailService.js');
 
 
 exports.getLogin = function(req, res) {
-  if (req.admin)
+  if (req.agent)
     return res.redirect('/admin');
 
   res.render('admin/login', {

@@ -1,6 +1,7 @@
 'use strict';
 
 var passport = require('passport');
+passport = new passport.Passport();
 var Promise = require('bluebird');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -177,3 +178,9 @@ exports.isAuthorized = function(req, res, next) {
     res.redirect('/auth/' + provider);
   }
 };
+
+/**
+ *
+ *
+ */
+exports.passport = passport; 

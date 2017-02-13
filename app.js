@@ -23,7 +23,6 @@ var Promise = require('bluebird');
 //var MySQLStore = require('connect-mysql')({ session: session });
 var flash = require('express-flash');
 var path = require('path');
-var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 
@@ -43,7 +42,6 @@ var adminController = require('./controllers/admin');
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
 var passportAgentConf = require('./config/passport_agent');
-var passportAdminConf = require('./config/passport_admin');
 
 /**
  * Create Express server.
@@ -112,27 +110,36 @@ app.use(session({
     //, secure: true // only when on HTTPS
   }
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+
+app.use(passportConf.passport.initialize());
+app.use(passportConf.passport.session());
+app.use(passportAgentConf.passport.initialize());
+app.use(passportAgentConf.passport.session());
+
 app.use(flash());
 app.use(lusca({
   csrf: { angular: true },
   xframe: 'SAMEORIGIN',
   xssProtection: true
 }));
+
 app.use(function(req, res, next) {
   res.locals.user = req.user;
+  res.locals.agent = req.agent;
   res.locals.gaCode = secrets.googleAnalyticsCode;
   next();
 });
+
 app.use(function(req, res, next) {
   if (/api/i.test(req.path)) req.session.returnTo = req.path;
   next();
 });
+
 app.use(function(req, res, next) {
   res.cookie('XSRF-TOKEN', res.locals._csrf, {httpOnly: false});
   next();
 });
+
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 
@@ -184,12 +191,12 @@ app.get('/agent/logout', agentController.logout);
 /**
  * Admin routes.
  */
-app.get('/admin', passportAdminConf.isAuthenticated, adminController.getDashboard);
+app.get('/admin', passportAgentConf.isAuthenticated, adminController.getDashboard);
 app.get('/admin/login', adminController.getLogin);
 app.post('/admin/login', adminController.postLogin);
 app.get('/admin/logout', adminController.logout);
-app.get('/admin/create', passportAdminConf.isAuthenticated, adminController.getCreateAgent);
-app.post('/admin/create', passportAdminConf.isAuthenticated, adminController.postCreateAgent);
+app.get('/admin/create', passportAgentConf.isAuthenticated, adminController.getCreateAgent);
+app.post('/admin/create', passportAgentConf.isAuthenticated, adminController.postCreateAgent);
 
 /**
  * API examples routes.
@@ -230,16 +237,16 @@ function safeRedirectToReturnTo(req, res) {
 /**
  * OAuth authentication routes. (Sign in)
  */
-app.get('/auth/facebook', passport.authenticate('facebook', secrets.facebook.authOptions));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login', failureFlash: true }), safeRedirectToReturnTo);
-app.get('/auth/github', passport.authenticate('github', secrets.github.authOptions));
-app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login', failureFlash: true }), safeRedirectToReturnTo);
-app.get('/auth/google', passport.authenticate('google', secrets.google.authOptions));
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login', failureFlash: true }), safeRedirectToReturnTo);
-app.get('/auth/twitter', passport.authenticate('twitter', secrets.twitter.authOptions));
-app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login', failureFlash: true }), safeRedirectToReturnTo);
-app.get('/auth/linkedin', passport.authenticate('linkedin', secrets.linkedin.authOptions));
-app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login', failureFlash: true }), safeRedirectToReturnTo);
+app.get('/auth/facebook', passportConf.passport.authenticate('facebook', secrets.facebook.authOptions));
+app.get('/auth/facebook/callback', passportConf.passport.authenticate('facebook', { failureRedirect: '/login', failureFlash: true }), safeRedirectToReturnTo);
+app.get('/auth/github', passportConf.passport.authenticate('github', secrets.github.authOptions));
+app.get('/auth/github/callback', passportConf.passport.authenticate('github', { failureRedirect: '/login', failureFlash: true }), safeRedirectToReturnTo);
+app.get('/auth/google', passportConf.passport.authenticate('google', secrets.google.authOptions));
+app.get('/auth/google/callback', passportConf.passport.authenticate('google', { failureRedirect: '/login', failureFlash: true }), safeRedirectToReturnTo);
+app.get('/auth/twitter', passportConf.passport.authenticate('twitter', secrets.twitter.authOptions));
+app.get('/auth/twitter/callback', passportConf.passport.authenticate('twitter', { failureRedirect: '/login', failureFlash: true }), safeRedirectToReturnTo);
+app.get('/auth/linkedin', passportConf.passport.authenticate('linkedin', secrets.linkedin.authOptions));
+app.get('/auth/linkedin/callback', passportConf.passport.authenticate('linkedin', { failureRedirect: '/login', failureFlash: true }), safeRedirectToReturnTo);
 
 /**
  * Error Handler.

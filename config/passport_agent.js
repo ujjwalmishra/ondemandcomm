@@ -1,6 +1,7 @@
 'use strict';
 
 var passport = require('passport');
+passport = new passport.Passport();
 var Promise = require('bluebird');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -12,11 +13,13 @@ passport.serializeUser(function(agent, done) {
 });
 
 passport.deserializeUser(function(id, done) {
+
   db.Agent.findById(id).then(function(agent) {
     done(null, agent);
   }).catch(function(error) {
     done(error);
   });
+
 });
 
 /**
@@ -41,15 +44,4 @@ exports.isAuthenticated = function(req, res, next) {
   res.redirect('/agent/login');
 };
 
-/**
- * Authorization Required middleware.
- */
-// exports.isAuthorized = function(req, res, next) {
-//   var provider = req.path.split('/').slice(-1)[0];
-
-//   if (req.agent.tokens[provider]) {
-//     next();
-//   } else {
-//     res.redirect('/auth/' + provider);
-//   }
-// };
+exports.passport = passport;

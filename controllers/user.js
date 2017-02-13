@@ -2,7 +2,7 @@
 
 var crypto;
 var async = require('neo-async');
-var passport = require('passport');
+var passport = require('../config/passport').passport;
 
 var UserRepo = require('../repositories/UserRepository.js');
 var emailService = require('../services/emailService.js');
