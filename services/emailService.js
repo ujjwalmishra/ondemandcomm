@@ -34,4 +34,16 @@ service.sendPasswordChangeNotificationEmail = function(email, done) {
   mailer.send(mailOptions, done);
 };
 
+service.sendAgentCreationNotificationEmail = function(email, done) {
+  var mailOptions = {
+    to: email,
+    from: senderAddress,
+    subject: 'Your ' + applicationName + ' account has been created',
+    text: 'Hello,\n\n' +
+    'This is a confirmation that your account ' + email + ' has just been created.\n'
+  };
+
+  mailer.send(mailOptions, done);  
+}
+
 module.exports = service;

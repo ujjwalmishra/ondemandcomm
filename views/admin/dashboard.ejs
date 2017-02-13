@@ -1,0 +1,17 @@
+<% layout('layout') -%>
+
+<h1>OnDemCom</h1>
+<p class="lead">Welcome <%= admin.profile.name || admin.email %>.</p>
+<hr/>
+    <% if(!agentList) { %>
+    	<p>No Agent Added</p>
+    <% } else { %>
+    	<table>
+			<% for(var i=0; i < agentList.length; i++) { %>
+			   <tr>
+			     <td><%= agentList[i].email %></td>
+			     <td><%= agentList[i].id %></td>
+			   </tr>
+			<% } %>
+		</table>
+    <% } %>

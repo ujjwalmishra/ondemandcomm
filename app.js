@@ -34,12 +34,16 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+var agentController = require('./controllers/agent');
+var adminController = require('./controllers/admin');
 
 /**
  * API keys and Passport configuration.
  */
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
+var passportAgentConf = require('./config/passport_agent');
+var passportAdminConf = require('./config/passport_admin');
 
 /**
  * Create Express server.
@@ -156,7 +160,7 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 /**
  * Product routes.
  */
-// app.get('/products', productController.index);
+// app.get('/products', productController.getProducts);
 // app.get('/product/:productId/edit', productController.getEdit);
 // app.post('/product/:productId/edit', productController.postEdit);
 // app.get('/product/:productId/detail', productController.detail);
@@ -172,10 +176,20 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 /**
  * Agent routes.
  */
-// app.get('/agents', agentController.getDashboard);
-// app.get('/agent/login', agentController.getLogin);
-// app.post('/agent/login', agentController.postLogin);
-// app.get('/agent/logout', agentController.logout);
+app.get('/agents', passportAgentConf.isAuthenticated, agentController.getDashboard);
+app.get('/agent/login', agentController.getLogin);
+app.post('/agent/login', agentController.postLogin);
+app.get('/agent/logout', agentController.logout);
+
+/**
+ * Admin routes.
+ */
+app.get('/admin', passportAdminConf.isAuthenticated, adminController.getDashboard);
+app.get('/admin/login', adminController.getLogin);
+app.post('/admin/login', adminController.postLogin);
+app.get('/admin/logout', adminController.logout);
+app.get('/admin/create', passportAdminConf.isAuthenticated, adminController.getCreateAgent);
+app.post('/admin/create', passportAdminConf.isAuthenticated, adminController.postCreateAgent);
 
 /**
  * API examples routes.
