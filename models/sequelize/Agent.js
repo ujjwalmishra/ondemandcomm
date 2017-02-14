@@ -30,11 +30,11 @@ var beforeSaveHook = function(agent, options, fn) {
   if(agent.changed('password')) {
     this.encryptPassword(agent.password, function(hash, err) {
       agent.password = hash;
-      fn(null, user);
+      fn(null, agent);
     });
     return;
   }
-  fn(null, user);
+  fn(null, agent);
 };
 
 module.exports = function(db, DataTypes) {

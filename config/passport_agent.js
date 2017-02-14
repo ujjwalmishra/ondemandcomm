@@ -13,7 +13,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  console.log('deera');
+
   db.Agent.findById(id).then(function(user) {
     done(null, user);
   }).catch(function(error) {
@@ -40,11 +40,10 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  * Login Required middleware.
  */
 exports.isAuthenticated = function(req, res, next) {
-  console.log('authbox');
-  console.log(req.user);
-  console.log(req.isAuthenticated());
+
   if (req.isAuthenticated()) return next();
   res.redirect('/agent/login');
+
 };
 
 exports.passport = passport;

@@ -55,7 +55,7 @@ var emailService = require('../services/emailService.js');
 // };
 
 exports.getCreateAgent = function(req, res) {
-  res.render('/admin/create', {title: "Creata Agent"});
+  res.render('admin/create', {title: "Creata Agent"});
 }
 
 exports.postCreateAgent = function(req, res) {
@@ -75,7 +75,7 @@ exports.postCreateAgent = function(req, res) {
     password: req.body.password,
     profile: {},
     token: {},
-    AdminId: req.admin
+    RoleId: 2
   }).then(function(agent) {
 
     emailService.sendAgentCreationNotificationEmail(agent.email, function(err, data) {
@@ -89,7 +89,7 @@ exports.postCreateAgent = function(req, res) {
 
   }).catch(function(err) {
       req.flash('errors', { msg: err });
-      return res.redirect('/admin');
+      return res.redirect('/agent/admin');
   })
 }
 

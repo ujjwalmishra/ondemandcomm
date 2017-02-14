@@ -25,8 +25,7 @@ exports.postLogin = function(req, res, next) {
   }
 
   passport.authenticate('local', function(err, agent, info) {
-    console.log('agent in agent');
-    console.log(err);
+
     if (!agent || err) {
       req.flash('errors', { msg: err || info.message });
       return res.redirect('/agent/login');

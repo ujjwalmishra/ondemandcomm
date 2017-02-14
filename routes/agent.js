@@ -50,14 +50,14 @@ app.use(function(req, res, next) {
 });
 
 app.use(lusca({
-  csrf: { angular: true },
+  csrf: true,
   xframe: 'SAMEORIGIN',
   xssProtection: true
 }));
 
 
 app.use(function(req, res, next) {
-  res.cookie('XSRF-TOKEN', res.locals._csrf, {httpOnly: false});
+  res.cookie('XSRF-TOKENA', res.locals._csrf, {httpOnly: false});
   next();
 });
 
