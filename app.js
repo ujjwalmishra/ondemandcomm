@@ -14,7 +14,6 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var chalk = require('chalk');
 var errorHandler = require('errorhandler');
-var lusca = require('lusca');
 var methodOverride = require('method-override');
 var multer = require('multer');
 var ejsEngine = require('ejs-mate');
@@ -35,9 +34,6 @@ var agentApp = require('./routes/agent');
  */
 var app = express();
 
-// set routes
-app.use('/', mainApp);
-app.use('/agent', agentApp);
 
 /* Avoid not responsing when server load is huge */
 // app.use(function(req, res, next) {
@@ -88,19 +84,14 @@ var dbChat = require('./models/chat');
 
 
 app.use(flash());
-app.use(lusca({
-  csrf: { angular: true },
-  xframe: 'SAMEORIGIN',
-  xssProtection: true
-}));
-
-
-app.use(function(req, res, next) {
-  res.cookie('XSRF-TOKEN', res.locals._csrf, {httpOnly: false});
-  next();
-});
 
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+
+
+// set routes
+
+app.use('/agent', agentApp);
+app.use('/', mainApp);
 
 /**
  * Error Handler.

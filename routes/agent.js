@@ -3,6 +3,7 @@ var app = express();
 var router = express.Router();
 var session = require('express-session');
 var pgSession = require('connect-pg-simple')(session);
+var lusca = require('lusca');
 
 var passportAgentConf = require('../config/passport_agent');
 var secrets = require('../config/secrets');
@@ -15,6 +16,7 @@ var adminController = require('../controllers/admin');
 app.use(router);
 
 app.use(session({
+  name: 'admin.sid',	
   store: new pgSession({
     conString: secrets.postgrescomm,
     tableName: secrets.sessionTableAgent
@@ -31,6 +33,25 @@ app.use(session({
 
 app.use(passportAgentConf.passport.initialize());
 app.use(passportAgentConf.passport.session());
+
+app.use(function(req, res, next) {
+	console.log(req.user);
+	console.log(req.agent);
+  res.locals.user = req.user || req.agent;
+  next();
+});
+
+app.use(lusca({
+  csrf: { angular: true },
+  xframe: 'SAMEORIGIN',
+  xssProtection: true
+}));
+
+
+app.use(function(req, res, next) {
+  res.cookie('XSRF-TOKEN', res.locals._csrf, {httpOnly: false});
+  next();
+});
 
 /**
  * Agent routes.

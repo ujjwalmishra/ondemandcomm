@@ -3,6 +3,7 @@ var app = express();
 var router = express.Router();
 var session = require('express-session');
 var pgSession = require('connect-pg-simple')(session);
+var lusca = require('lusca');
 
 /**
  * Controllers (route handlers).
@@ -22,6 +23,7 @@ app.use(router);
 
 // PostgreSQL Store
 app.use(session({
+  name: 'sid',		
   store: new pgSession({
     conString: secrets.postgrescomm,
     tableName: secrets.sessionTable
@@ -45,6 +47,19 @@ app.use(function(req, res, next) {
   res.locals.user = req.user;
   next();
 });
+
+app.use(lusca({
+  csrf: { angular: true },
+  xframe: 'SAMEORIGIN',
+  xssProtection: true
+}));
+
+
+app.use(function(req, res, next) {
+  res.cookie('XSRF-TOKEN', res.locals._csrf, {httpOnly: false});
+  next();
+});
+
 
 app.use(function(req, res, next) {
   if (/api/i.test(req.path)) req.session.returnTo = req.path;

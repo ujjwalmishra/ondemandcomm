@@ -29,6 +29,7 @@ exports.postLogin = function(req, res, next) {
       return res.redirect('/agent/login');
     }
     req.logIn(agent, function(loginErr) {
+      console.log("loggin in");
       if (loginErr) return next(loginErr);
       req.flash('success', { msg: 'Success! You are logged in.' });
       var redirectTo = req.session.returnTo || '/';
