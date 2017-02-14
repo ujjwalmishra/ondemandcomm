@@ -13,7 +13,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-
+  console.log('deera');
   db.Agent.findById(id).then(function(user) {
     done(null, user);
   }).catch(function(error) {
@@ -27,10 +27,10 @@ passport.deserializeUser(function(id, done) {
  */
 passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, password, done) {
   email = email.toLowerCase();
-  db.Agent.findAgent(email, password, function(err, agent) {
+  db.Agent.findAgent(email, password, function(err, user) {
     if(err)
       return done(err, null);
-    return done(null, agent);
+    return done(null, user);
   });
 }));
 
@@ -40,6 +40,9 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  * Login Required middleware.
  */
 exports.isAuthenticated = function(req, res, next) {
+  console.log('authbox');
+  console.log(req.user);
+  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) return next();
   res.redirect('/agent/login');
 };

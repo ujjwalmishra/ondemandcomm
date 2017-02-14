@@ -3,8 +3,10 @@
 var passport = require('../config/passport_agent').passport;
 
 exports.getLogin = function(req, res) {
-  if (req.agent)
-    return res.redirect('/agents');
+  if (req.user && req.user.RoleId == 2)
+    return res.redirect('/agent/agent');
+  if(req.user && req.user.RoleId == 1) 
+    return res.redirect('/agent/admin');
 
   res.render('agent/login', {
     title: 'Login Agent'
