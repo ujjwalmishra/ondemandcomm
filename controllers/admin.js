@@ -94,6 +94,8 @@ exports.postCreateAgent = function(req, res) {
 }
 
 exports.getDashboard = function(req, res) {
+  console.log(req.user);
+  console.log(req.agent);
   var agentList = null;
   AdminRepo.getAgents(req.admin)
   .then(function(list) {

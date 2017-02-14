@@ -23,11 +23,13 @@
 module.exports = {
 
   sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
+  sessionSecretAgent: process.env.SESSION_SECRET_AGENT || 'Your Session Secret goes here',
 
   //will be generated. Take a look at the bottom of this file
   postgrescomm: {},
   postgreschat: {},
   sessionTable: 'session',
+  sessionTableAgent: 'session_agent',
   googleAnalyticsCode: process.env.GOOGLE_ANALYTICS_CODE || null,
 
   /*  */

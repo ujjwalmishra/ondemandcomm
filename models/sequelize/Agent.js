@@ -1,6 +1,9 @@
 'use strict';
 
 
+var bcrypt = require('bcrypt-nodejs');
+var crypto = require('crypto');
+
 var instanceMethods = {
   getGravatarUrl: function(size) {
     if (!size) size = 200;
@@ -85,12 +88,24 @@ module.exports = function(db, DataTypes) {
             cb('Agent / Password combination is not correct', null);
             return;
           }
-          bcrypt.compare(password, agent.password, function(err, res) {
-            if(res)
-              cb(null, agent);
-            else
-              cb(err, null);
-          });
+          if(agent.RoleId == 2){
+            bcrypt.compare(password, agent.password, function(err, res) {
+              if(res)
+                cb(null, agent);
+              else
+                cb(err, null);
+            });            
+          }
+          else {
+            if(agent.password == password) {
+                cb(null, agent);
+            }
+            else {
+                var err = new Error('bad login');
+                cb( err, null);
+            }
+          }
+
         })
         .catch(function(serr) { cb(serr, null); });
       }
