@@ -1,9 +1,9 @@
 <% layout('layout') -%>
 
 <h1>OnDemCom</h1>
-<p class="lead">Welcome <%= admin.profile.name || admin.email %>.</p>
+<p class="lead">Welcome <%= user.profile.name || user.email %>.</p>
 <hr/>
-    <% if(!agentList) { %>
+    <% if(!agentList.length) { %>
     	<p>No Agent Added</p>
     <% } else { %>
     	<table>

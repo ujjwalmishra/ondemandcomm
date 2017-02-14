@@ -4,6 +4,7 @@ var router = express.Router();
 var session = require('express-session');
 var pgSession = require('connect-pg-simple')(session);
 var lusca = require('lusca');
+var flash = require('express-flash');
 
 var passportAgentConf = require('../config/passport_agent');
 var secrets = require('../config/secrets');
@@ -31,13 +32,20 @@ app.use(session({
   }
 }));
 
+app.use(flash());
+
 app.use(passportAgentConf.passport.initialize());
 app.use(passportAgentConf.passport.session());
 
 app.use(function(req, res, next) {
-	console.log(req.user);
-	console.log(req.agent);
   res.locals.user = req.user || req.agent;
+  if(req.user) {
+    res.locals.isAgent = true;    
+  }
+  else{
+    res.locals.isAgent = false;  
+  }
+
   next();
 });
 

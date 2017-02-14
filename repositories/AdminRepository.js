@@ -24,7 +24,7 @@ repo.createAgent = function(agent) {
 
 repo.getAgents = function(adminId) {
 
-	return db.Agent.findAll({where: {adminId: adminId}})
+	return db.Agent.findAll({where: {RoleId: 2}})
 	.then(function(list){
 		return list;
 	})

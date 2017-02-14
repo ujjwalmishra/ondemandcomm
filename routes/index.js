@@ -4,6 +4,7 @@ var router = express.Router();
 var session = require('express-session');
 var pgSession = require('connect-pg-simple')(session);
 var lusca = require('lusca');
+var flash = require('express-flash');
 
 /**
  * Controllers (route handlers).
@@ -38,6 +39,7 @@ app.use(session({
   }
 }));
 
+app.use(flash());
 
 app.use(passportConf.passport.initialize());
 app.use(passportConf.passport.session());
@@ -45,6 +47,7 @@ app.use(passportConf.passport.session());
 
 app.use(function(req, res, next) {
   res.locals.user = req.user;
+  res.locals.isAgent = false;
   next();
 });
 

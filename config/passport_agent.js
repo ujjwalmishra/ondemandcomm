@@ -8,14 +8,14 @@ var LocalStrategy = require('passport-local').Strategy;
 var secrets = require('./secrets');
 var db = require('../models/sequelize');
 
-passport.serializeUser(function(agent, done) {
-  done(null, agent.id);
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
 
-  db.Agent.findById(id).then(function(agent) {
-    done(null, agent);
+  db.Agent.findById(id).then(function(user) {
+    done(null, user);
   }).catch(function(error) {
     done(error);
   });

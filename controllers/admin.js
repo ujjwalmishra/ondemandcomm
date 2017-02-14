@@ -94,20 +94,18 @@ exports.postCreateAgent = function(req, res) {
 }
 
 exports.getDashboard = function(req, res) {
-  console.log(req.user);
-  console.log(req.agent);
   var agentList = null;
-  AdminRepo.getAgents(req.admin)
+  AdminRepo.getAgents(req.user.id)
   .then(function(list) {
 
     agentList = list;
-    res.render('/admin/dashboard', {title: 'Admin Dashboard', agentList: agentList})
+    res.render('admin/dashboard', {title: 'Admin Dashboard', agentList: agentList})
   
   })
   .catch(function(err) {
 
     req.flash('errors', {msg: err});
-    res.render('/admin/dashboard', {title: 'Admin Dashboard', agentList: agentList})
+    res.render('admin/dashboard', {title: 'Admin Dashboard', agentList: agentList})
   
   })
   

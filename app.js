@@ -8,8 +8,6 @@ require('dotenv').config();
 var cookieParser = require('cookie-parser');
 var compress = require('compression');
 var favicon = require('serve-favicon');
-var session = require('express-session');
-var pgSession = require('connect-pg-simple')(session);
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var chalk = require('chalk');
@@ -20,7 +18,6 @@ var ejsEngine = require('ejs-mate');
 var Promise = require('bluebird');
 
 //var MySQLStore = require('connect-mysql')({ session: session });
-var flash = require('express-flash');
 var path = require('path');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
@@ -83,7 +80,7 @@ var dbChat = require('./models/chat');
 // }));
 
 
-app.use(flash());
+
 
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 

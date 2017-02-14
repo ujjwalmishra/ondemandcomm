@@ -12,8 +12,11 @@
     <%- css('main') %>
   </head>
   <body>
+  <% if(isAgent) { %>
+    <% include partials/agentheader %>
+  <% } else { %>
     <% include partials/header %>
-
+  <% } %>  
     <div class="container">
       <% include partials/flash %>
       <%- body %>
