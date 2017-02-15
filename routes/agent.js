@@ -64,8 +64,11 @@ app.use(function(req, res, next) {
 /**
  * Agent routes.
  */
+app.get('/', passportAgentConf.isAuthenticated, agentController.getDashboard); 
 app.get('/agent', passportAgentConf.isAuthenticated, agentController.getDashboard);
 app.get('/login', agentController.getLogin);
+app.get('/account', agentController.getAccount);
+app.post('/account', agentController.postUpdateProfile);
 app.post('/login', agentController.postLogin);
 app.get('/logout', agentController.logout);
 
@@ -73,8 +76,10 @@ app.get('/logout', agentController.logout);
  * Admin routes.
  */
 app.get('/admin', passportAgentConf.isAuthenticated, adminController.getDashboard);
-app.get('/admin/create', passportAgentConf.isAuthenticated, adminController.getCreateAgent);
-app.post('/admin/create', passportAgentConf.isAuthenticated, adminController.postCreateAgent);
+app.get('/admin/agent/:agentId', adminController.getAgentSales);
+app.get('/admin/order/:orderId', adminController.getOrderItems);
+app.get('/admin/create', adminController.getCreateAgent);
+app.post('/admin/create', adminController.postCreateAgent);
 
 
 module.exports = app;

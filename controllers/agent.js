@@ -1,6 +1,7 @@
 'use strict';
 
 var passport = require('../config/passport_agent').passport;
+var AgentRepo = require('../repositories/AgentRepository.js');
 
 exports.getLogin = function(req, res) {
   if (req.user && req.user.RoleId == 2)
@@ -40,17 +41,12 @@ exports.postLogin = function(req, res, next) {
       else {
         redirectTo = '/agent/agent';
       }
-      // console.log("redirectuing");
-      // var redirectTo = req.session.returnTo || '/';      
-      // console.log(redirectTo);
-      // delete req.session.returnTo;
       res.redirect(redirectTo);
     });
   })(req, res, next);
 };
 
 exports.logout = function(req, res) {
-  console.log("logniout");
   req.logOut();
   res.locals.user = null;
   res.render('home', {
@@ -68,3 +64,25 @@ exports.getDashboard = function(req, res) {
     title: 'Dashboard'
   });	
 }
+
+
+exports.getAccount = function(req, res) {
+  res.render('agent/profile', {
+    title: 'Agent Account Management'
+  });
+};
+
+exports.postUpdateProfile = function(req, res) {
+  req.assert('email', 'Email is not valid').isEmail();
+
+  AgentRepo.changeProfileData(req.user.id, req.body)
+    .then(function() {
+      req.flash('success', { msg: 'Profile information updated.' });
+      res.redirect('account');
+    })
+    .catch(function(err) {
+      console.log(err);
+      req.flash('errors', { msg: err });
+      res.redirect('account');
+    });
+};

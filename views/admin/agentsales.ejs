@@ -1,0 +1,28 @@
+<% layout('layout') -%>
+
+<h1>OnDemCom</h1>
+<p class="lead">Agent <%= agent.profile.name || agent.email %>.</p>
+<hr/>
+    <% if(!sales.length) { %>
+    	<p>No Sales Yet</p>
+    <% } else { %>
+    	<div class="col-sm-12">
+    		<div class="col-sm-3">Sold Price</div>
+    		<div class="col-sm-3">Description</div>
+    		<div class="col-sm-3">Line Items</div>
+    		<div class="col-sm-3"></div>
+    	</div>
+    	<div class="col-sm-12">
+			<% for(var i=0; i < sales.length; i++) { %>
+			   <div>
+			     <div class="col-sm-3"><%= sales[i].currency %><%= sales[0].totalprice %></div>
+			     <div class="col-sm-3"><%= sales[i].description %></div>
+			     <div class="col-sm-3"><%= sales[i].totallineitems %></div>
+			     <div class="col-sm-3"><a href="/agent/admin/order/<%= sales[i].id%>">View Order</a></div>
+			   </div>
+			<% } %>
+		</div>
+    <% } %>
+
+<hr/>
+<a href="admin/create" >Create Agent</a>   

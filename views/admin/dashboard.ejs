@@ -6,15 +6,21 @@
     <% if(!agentList.length) { %>
     	<p>No Agent Added</p>
     <% } else { %>
-    	<table>
+    	<div class="col-sm-12">
 			<% for(var i=0; i < agentList.length; i++) { %>
-			   <tr>
-			     <td><%= agentList[i].email %></td>
-			     <td><%= agentList[i].id %></td>
-			   </tr>
+			   <div>
+			     <div class="col-sm-4"><%= agentList[i].email %></div>
+			     <div class="col-sm-4"><%= agentList[i].profile.name %></div>
+			     <div class="col-sm-4"><a href="admin/agent/<%=agentList[i].id %>">View Agent</a></div>
+			   </div>
 			<% } %>
-		</table>
+		</div>
     <% } %>
 
-<hr/>
-<a href="admin/create" >Create Agent</a>   
+
+<div class="row">
+	<div class="col-sm-6">
+		<a href="admin/create" >Create Agent</a>
+	</div>
+</div>
+   

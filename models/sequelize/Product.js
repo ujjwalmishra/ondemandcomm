@@ -34,6 +34,7 @@ module.exports = function(db, DataTypes) {
     	type: DataTypes.STRING,
     	allowNull: false
     },
+    imageurl: DataTypes.STRING,
     currency: DataTypes.STRING,
     sizeS: DataTypes.INTEGER,
     sizeM: DataTypes.INTEGER,

@@ -24,7 +24,7 @@ module.exports = function(db, DataTypes) {
       associate: function(models) {
         Order.hasMany(models.OrderItem);
         Order.belongsTo(models.User);
-        Order.belongsTo(models.User);
+        Order.belongsTo(models.Agent);
       }
    },
     hooks: {

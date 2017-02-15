@@ -34,4 +34,34 @@ repo.getAgents = function(adminId) {
 
 }
 
+repo.getAgentSales = function(agentId) {
+	console.log(agentId);
+	return db.Agent.findById(agentId)
+	.then(function(agent){
+		return db.Order.findAll({where: {AgentId: agentId}})
+		.then(function(list) {
+			return {list: list, agent: agent};
+		})
+		.catch(function(err) {
+			throw err
+		})		
+	})
+	.catch(function(err){
+		throw err;
+	})
+
+}
+
+repo.getOrderItems = function(orderId) {
+	return db.OrderItem.findAll({where: {OrderId: orderId}})
+	.then(function(items){
+		return items;	
+	})
+	.catch(function(err){
+		throw err;
+	})
+
+}
+
+
 module.exports = repo;

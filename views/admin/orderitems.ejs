@@ -1,0 +1,29 @@
+<% layout('layout') -%>
+
+<h1>OnDemCom</h1>
+<p class="lead">Order Summary</p>
+<hr/>
+    <% if(!items.length) { %>
+    	<p>No Items Yet</p>
+    <% } else { %>
+        <h4>Order Id <%= items[0].OrderId %></h4>
+    	<div class="col-sm-12">
+    		<div class="col-sm-3">Discount</div>
+    		<div class="col-sm-3">Items</div>
+    		<div class="col-sm-3">Price</div>
+    		<div class="col-sm-3">Quantity</div>
+    	</div>
+    	<div class="col-sm-12">
+			<% for(var i=0; i < items.length; i++) { %>
+			   <div>
+			     <div class="col-sm-3"><%= items[i].discount %></div>
+			     <div class="col-sm-3"><%= items[i].description %></div>
+			     <div class="col-sm-3"><%= items[i].currency %><%= items[0].price %></div>
+			     <div class="col-sm-3"><%= items[i].quantity %></div>
+			   </div>
+			<% } %>
+		</div>
+    <% } %>
+
+<hr/>
+<a href="admin/create" >Create Agent</a>   

@@ -8,52 +8,6 @@ var AdminRepo = require('../repositories/AdminRepository.js');
 var emailService = require('../services/emailService.js');
 
 
-// exports.getLogin = function(req, res) {
-//   if (req.agent)
-//     return res.redirect('/admin');
-
-//   res.render('admin/login', {
-//     title: 'Login Admin'
-//   });
-// };
-
-// exports.postLogin = function(req, res, next) {
-//   req.assert('email', 'Email is not valid').isEmail();
-//   req.assert('password', 'Password cannot be blank').notEmpty();
-
-//   var errors = req.validationErrors();
-
-//   if (errors) {
-//     req.flash('errors', errors);
-//     return res.redirect('/admin/login');
-//   }
-
-//   passport.authenticate('local', function(err, admin, info) {
-//     console.log("pasauth");
-//     if (!admin || err) {
-//       req.flash('errors', { msg: err || info.message });
-//       return res.redirect('/login');
-//     }
-//     req.logIn(admin, function(loginErr) {
-//       if (loginErr) return next(loginErr);
-//       req.flash('success', { msg: 'Success! You are logged in.' });
-//       var redirectTo = req.session.returnTo || '/';
-//       console.log("redirectinf");
-//       console.log(redirectTo);
-//       delete req.session.returnTo;
-//       res.redirect(redirectTo);
-//     });
-//   })(req, res, next);
-// };
-
-// exports.logout = function(req, res) {
-//   req.logout();
-//   res.locals.admin = null;
-//   res.render('home', {
-//     title: 'Home'
-//   });
-// };
-
 exports.getCreateAgent = function(req, res) {
   res.render('admin/create', {title: "Creata Agent"});
 }
@@ -79,9 +33,6 @@ exports.postCreateAgent = function(req, res) {
   }).then(function(agent) {
 
     emailService.sendAgentCreationNotificationEmail(agent.email, function(err, data) {
-      console.log("mailer result");
-      console.log(err);
-      console.log(data);
       req.flash('success', {msg: 'Agent account created'});
       res.redirect('/admin');
     })
@@ -109,4 +60,34 @@ exports.getDashboard = function(req, res) {
   
   })
   
+}
+
+exports.getAgentSales = function(req, res) {
+  AdminRepo.getAgentSales(req.params.agentId)
+  .then(function(salesList) {
+
+    res.render('admin/agentsales', {sales: salesList.list, agent: salesList.agent, title: 'Agent Sale'});
+
+  })
+  .catch(function(err) {
+
+    req.flash('errors', {msg: err});
+    res.redirect('admin');
+
+  })
+}
+
+exports.getOrderItems = function(req, res) {
+  AdminRepo.getOrderItems(req.params.orderId)
+  .then(function(itemList) {
+
+    res.render('admin/orderitems', {items: itemList, title: 'Order Items'});
+
+  })
+  .catch(function(err) {
+
+    req.flash('errors', {msg: err});
+    res.redirect('admin');
+
+  })
 }
