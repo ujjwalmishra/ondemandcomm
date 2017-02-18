@@ -34,11 +34,12 @@ exports.postCreateAgent = function(req, res) {
 
     emailService.sendAgentCreationNotificationEmail(agent.email, function(err, data) {
       req.flash('success', {msg: 'Agent account created'});
-      res.redirect('/admin');
+      res.redirect('/agent/admin');
     })
 
 
   }).catch(function(err) {
+
       req.flash('errors', { msg: err });
       return res.redirect('/agent/admin');
   })
