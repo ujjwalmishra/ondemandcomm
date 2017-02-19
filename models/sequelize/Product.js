@@ -64,3 +64,5 @@ module.exports = function(db, DataTypes) {
 
   return Product;
 };
+
+//starting chat module
