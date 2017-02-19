@@ -36,11 +36,11 @@ module.exports = function(db, DataTypes) {
     },
     imageurl: DataTypes.STRING,
     currency: DataTypes.STRING,
-    sizeS: DataTypes.INTEGER,
-    sizeM: DataTypes.INTEGER,
-    sizeL: DataTypes.INTEGER,
-    sizeXL: DataTypes.INTEGER,
-    sizeXLL: DataTypes.INTEGER
+    sizes: DataTypes.INTEGER,
+    sizem: DataTypes.INTEGER,
+    sizel: DataTypes.INTEGER,
+    sizexl: DataTypes.INTEGER,
+    sizexll: DataTypes.INTEGER
   },{
     tableName: 'products',
     instanceMethods: instanceMethods,

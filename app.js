@@ -13,7 +13,6 @@ var logger = require('morgan');
 var chalk = require('chalk');
 var errorHandler = require('errorhandler');
 var methodOverride = require('method-override');
-var multer = require('multer');
 var ejsEngine = require('ejs-mate');
 var Promise = require('bluebird');
 
@@ -57,7 +56,6 @@ app.use(logger('dev'));
 app.use(favicon(path.join(__dirname, 'public/favicon.png')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multer({ dest: path.join(__dirname, 'uploads') }).single());
 app.use(expressValidator());
 app.use(methodOverride());
 app.use(cookieParser());

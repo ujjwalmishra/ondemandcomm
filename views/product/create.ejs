@@ -1,0 +1,85 @@
+<% layout('layout') -%>
+
+<div class="custom-container" >
+  <div class="page-header">
+    <h3>Upload Product</h3>
+  </div>
+  <form name="uploadProductForm" method="POST" class="form-horizontal" action="/agent/product/create" novalidate enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="<%= _csrf %>"/>
+    <div class="form-group">
+      <label for="price" class="col-sm-3 control-label">Price</label>
+      <div class="col-sm-7">
+        <input type="text" name="price" id="price" placeholder="Price" autofocus class="form-control" required/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="discount" class="col-sm-3 control-label">Discount</label>
+      <div class="col-sm-7">
+        <input type="text" name="discount" id="discount" placeholder="Discount" class="form-control" />
+       </div>
+    </div>
+    <div class="form-group">
+      <label for="description" class="col-sm-3 control-label">Description</label>
+      <div class="col-sm-7">
+        <textarea name="description" id="description" form="uploadProductForm" row="3">Enter text here...</textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="title" class="col-sm-3 control-label">Title</label>
+      <div class="col-sm-7">
+        <input type="text" name="title" id="title" placeholder="Title" class="form-control" />
+      </div>
+    </div>  
+    <div class="form-group">
+      <label for="title" class="col-sm-3 control-label">Currency</label>
+      <div class="col-sm-3">
+        <select name="currency">
+          <option value="$">$</option>
+        </select>
+      </div>
+    </div> 
+    <div class="form-group">
+      <label for="sizes" class="col-sm-2 control-label">SizeS Qty</label>
+      <div class="col-sm-2">
+        <input type="number" name="sizes" id="sizes" placeholder="SizeS" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="sizem" class="col-sm-2 control-label">SizeM Qty</label>
+      <div class="col-sm-2">
+        <input type="number" name="sizem" id="sizem" placeholder="SizeM" class="form-control" />
+      </div>
+    </div> 
+    <div class="form-group">
+      <label for="sizes" class="col-sm-2 control-label">SizeL Qty</label>
+      <div class="col-sm-2">
+        <input type="number" name="sizel" id="sizel" placeholder="SizeL" class="form-control" />
+      </div>
+    </div> 
+    <div class="form-group">
+      <label for="sizexl" class="col-sm-2 control-label">SizeXL Qty</label>
+      <div class="col-sm-2">
+        <input type="number" name="sizexl" id="sizexl" placeholder="SizeXL" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="sizexll" class="col-sm-2 control-label">SizeXLL Qty</label>
+      <div class="col-sm-2">
+        <input type="number" name="sizexll" id="sizexll" placeholder="SizeXLL" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="productimage" class="col-sm-2 control-label">Upload Product Image</label>
+      <div class="col-sm-7">
+        <input type="file" name="productimage" id="productimage"/>
+      </div>
+    </div>                          
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-7">
+        <button type="submit" class="btn btn-success" >
+          <i class="fa fa-user-plus"></i> Create
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

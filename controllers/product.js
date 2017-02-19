@@ -2,7 +2,7 @@
 
 
 var config = require('../config/product.js');
-
+var ProductRepo = require('../repositories/ProductRepository.js');
 /**
  * GET /products
  * Product display page.
@@ -20,4 +20,57 @@ exports.getProducts = function(req, res) {
   //   title: 'Contact'
   // });
 };
+
+exports.getCreateProduct = function(req, res) {
+
+
+  if(!req.user || req.user.RoleId != 2) {
+      req.flash('errors', { msg: "Bad credentials" });
+      return res.redirect('/');  
+  }
+
+  res.render('product/create', {title: 'Create Product'});
+
+  // res.render('contact', {
+  //   title: 'Contact'
+  // });
+};
+
+exports.postCreateProduct = function(req, res) {
+  req.assert('price', 'required').notEmpty();
+  req.assert('title', 'required').notEmpty().len(4);
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/agent/product/create');
+  }
+
+
+  ProductRepo.createProduct({
+    price : req.body.price,
+    discount: parseInt(req.body.discount),
+    quantity: 0,
+    description: req.body.description,
+    title: req.body.title,
+    currency: req.body.currency,
+    sizes: parseInt(req.body.sizes) || 0,
+    sizem: parseInt(req.body.sizem) || 0,
+    sizel: parseInt(req.body.sizel) || 0,
+    sizexl: parseInt(req.body.sizexl) || 0,
+    sizexll: parseInt(req.body.sizexll) || 0,
+    imageurl: req.file.filename
+  }).then(function(product) {
+
+  		req.flash('success', {msg: 'Product saved'});
+  		res.redirect('/agent/agent', {title: "ss"});
+
+  }).catch(function(err) {
+
+      req.flash('errors', { msg: err });
+      return res.redirect('create');
+
+  })
+}
 

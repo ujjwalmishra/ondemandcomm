@@ -1,8 +1,13 @@
 'use strict';
 
-// var db = require('../models/sequelize');
+var db = require('../models/sequelize');
+var repo = {};
 
-// var repo = {};
+repo.createProduct = function(product) {
 
+	  var dbProduct = db.Product.build(product);
 
-// repo.
+      return dbProduct.save();
+};
+
+module.exports = repo;

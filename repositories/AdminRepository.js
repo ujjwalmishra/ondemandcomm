@@ -54,10 +54,10 @@ repo.getAgentSales = function(agentId) {
 
 repo.getOrderItems = function(orderId) {
 	return db.OrderItem.findAll({where: {OrderId: orderId}})
-	.then(function(items){
+	.then(function(items) {
 		return items;	
 	})
-	.catch(function(err){
+	.catch(function(err) {
 		throw err;
 	})
 

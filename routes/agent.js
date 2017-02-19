@@ -5,6 +5,9 @@ var session = require('express-session');
 var pgSession = require('connect-pg-simple')(session);
 var lusca = require('lusca');
 var flash = require('express-flash');
+var path = require('path');
+var multer = require('multer');
+var mime = require('mime');
 
 var passportAgentConf = require('../config/passport_agent');
 var secrets = require('../config/secrets');
@@ -12,6 +15,7 @@ var secrets = require('../config/secrets');
 
 var agentController = require('../controllers/agent');
 var adminController = require('../controllers/admin');
+var productController = require('../controllers/product');
 
 
 app.use(router);
@@ -38,7 +42,7 @@ app.use(passportAgentConf.passport.initialize());
 app.use(passportAgentConf.passport.session());
 
 app.use(function(req, res, next) {
-  res.locals.user = req.user || req.agent;
+  res.locals.user = req.user;
   if(req.user) {
     res.locals.isAgent = true;    
   }
@@ -49,12 +53,28 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(lusca({
-  csrf: true,
-  xframe: 'SAMEORIGIN',
-  xssProtection: true
-}));
+app.use(function(req, res, next) {
+   if (req.path === '/product/create') {
+     res.locals._csrf = 'wololo';
+     next();
+  } else {
+    lusca.csrf()(req, res, next);
+  }
+ });
 
+app.use(lusca.xframe('SAMEORIGIN'));
+app.use(lusca.xssProtection(true));
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join( __dirname,'../', 'uploads'))
+  },
+  filename: function (req, file, cb) {
+    cb(null, '' + Date.now() + '-' + file.fieldname + '.' + mime.extension(file.mimetype))
+  }
+})
+ 
+var upload = multer({ storage: storage });
 
 app.use(function(req, res, next) {
   res.cookie('XSRF-TOKENA', res.locals._csrf, {httpOnly: false});
@@ -71,6 +91,8 @@ app.get('/account', agentController.getAccount);
 app.post('/account', agentController.postUpdateProfile);
 app.post('/login', agentController.postLogin);
 app.get('/logout', agentController.logout);
+app.get('/product/create', productController.getCreateProduct);
+app.post('/product/create', upload.single('productimage'), productController.postCreateProduct);
 
 /**
  * Admin routes.
