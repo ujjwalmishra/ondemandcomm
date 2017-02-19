@@ -10,4 +10,15 @@ repo.createProduct = function(product) {
       return dbProduct.save();
 };
 
+repo.getProducts = function() {
+
+	return db.Product.findAll()
+	.then(function(list){
+		return list;
+	})
+	.catch(function(err) {
+		throw err;
+	})
+}
+
 module.exports = repo;

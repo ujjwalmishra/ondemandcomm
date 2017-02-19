@@ -93,6 +93,7 @@ app.post('/login', agentController.postLogin);
 app.get('/logout', agentController.logout);
 app.get('/product/create', productController.getCreateProduct);
 app.post('/product/create', upload.single('productimage'), productController.postCreateProduct);
+app.get('/products', productController.getProductsList);
 
 /**
  * Admin routes.

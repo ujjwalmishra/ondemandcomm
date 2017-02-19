@@ -64,7 +64,7 @@ exports.postCreateProduct = function(req, res) {
   }).then(function(product) {
 
   		req.flash('success', {msg: 'Product saved'});
-  		res.redirect('/agent/agent', {title: "ss"});
+  		res.redirect('/products', {title: "ss"});
 
   }).catch(function(err) {
 
@@ -72,5 +72,24 @@ exports.postCreateProduct = function(req, res) {
       return res.redirect('create');
 
   })
+}
+
+
+exports.getProductsList = function(req, res) {
+  var productList = null;
+  ProductRepo.getProducts()
+  .then(function(list) {
+
+    productList = list;
+    res.render('product/products', {title: 'Products Dashboard', productList: productList})
+  
+  })
+  .catch(function(err) {
+
+    req.flash('errors', {msg: err});
+    res.render('product/products', {title: 'Products Dashboard', productList: productList})
+  
+  })
+  
 }
 

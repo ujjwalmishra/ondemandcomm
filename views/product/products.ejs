@@ -1,0 +1,22 @@
+<% layout('layout') -%>
+
+<h1>Products List</h1>
+<hr/>
+    <% if(!productList.length) { %>
+    	<p>No Products Added</p>
+    <% } else { %>
+    	<div class="col-sm-12">
+    	<div class="col-sm-4">Product Title</div>    	
+    	<div class="col-sm-4">Description</div>
+    	<div class="col-sm-4">Price</div>
+			<% for(var i=0; i < productList.length; i++) { %>
+			   <div>
+			     <div class="col-sm-4"><%= productList[i].title %></div>
+			     <div class="col-sm-4"><%= productList[i].description %></div>
+			     <div class="col-sm-4"><%= productList[i].currency %><%= productList[i].price %></div>
+			   </div>
+			<% } %>
+		</div>
+    <% } %>
+
+   
